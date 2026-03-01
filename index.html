@@ -1,1 +1,738 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mobilscene Helgeland – Sandnessjøen</title>
+  <meta name="description" content="Mobilscene Helgeland leverer sceneløsninger til arrangementer på Helgeland. Kontakt oss i Sandnessjøen." />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --bg:       #f5f4f2;
+      --white:    #ffffff;
+      --dark:     #1a1a1a;
+      --mid:      #444444;
+      --light:    #888888;
+      --rule:     #dddddd;
+      --red:      #c0392b;
+      --font:     'Source Sans 3', Arial, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--dark);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--rule);
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+    }
+
+    .nav-logo {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-logo-badge {
+      background: var(--dark);
+      color: var(--white);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 4px 8px;
+      letter-spacing: 0.5px;
+    }
+    .nav-logo-name {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--dark);
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--mid);
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--dark); }
+
+    .nav-links .nav-cta {
+      background: var(--red);
+      color: var(--white);
+      padding: 8px 18px;
+    }
+    .nav-links .nav-cta:hover { color: var(--white); opacity: 0.88; }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px; height: 2px;
+      background: var(--dark);
+      transition: all 0.25s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 62px; left: 0; right: 0;
+      background: var(--white);
+      border-bottom: 1px solid var(--rule);
+      z-index: 99;
+      padding: 12px 40px 24px;
+      flex-direction: column;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: var(--mid);
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+
+    /* ── HERO ── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 540px;
+    }
+
+    .hero-text {
+      padding: 72px 48px 72px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-text h1 {
+      font-size: clamp(32px, 4vw, 54px);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--dark);
+      margin-bottom: 20px;
+    }
+
+    .hero-text p {
+      font-size: 17px;
+      color: var(--mid);
+      max-width: 440px;
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
+
+    .hero-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 26px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--font);
+      text-decoration: none;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .btn-dark { background: var(--dark); color: var(--white); border-color: var(--dark); }
+    .btn-dark:hover { background: #333; border-color: #333; }
+    .btn-border { background: transparent; color: var(--dark); border-color: var(--dark); }
+    .btn-border:hover { background: var(--dark); color: var(--white); }
+
+    /* Hero image placeholder */
+    .hero-image {
+      background: #d0ceca;
+      position: relative;
+      overflow: hidden;
+      min-height: 400px;
+    }
+    .hero-image img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .img-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      font-size: 13px;
+      text-align: center;
+      gap: 8px;
+    }
+    .img-placeholder svg { opacity: 0.4; }
+
+    /* ── SECTIONS ── */
+    .section { padding: 72px 40px; }
+    .section-gray { background: var(--bg); }
+
+    h2 {
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 12px;
+      line-height: 1.15;
+    }
+
+    .sub {
+      font-size: 16px;
+      color: var(--mid);
+      max-width: 540px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+
+    /* ── SERVICES ── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--rule);
+    }
+
+    .service-card {
+      padding: 32px 28px;
+      border-right: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+    .service-card:nth-child(3n) { border-right: none; }
+    .service-card:nth-last-child(-n+3) { border-bottom: none; }
+
+    .service-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+    .service-card p {
+      font-size: 14px;
+      color: var(--mid);
+      line-height: 1.65;
+    }
+
+    /* ── IMAGE + TEXT ── */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      align-items: stretch;
+    }
+    .split-image {
+      background: #ccc;
+      min-height: 380px;
+      position: relative;
+      overflow: hidden;
+    }
+    .split-image img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .split-text {
+      padding: 64px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: var(--white);
+    }
+    .split-text.gray { background: var(--bg); }
+
+    .split-text p {
+      font-size: 15px;
+      color: var(--mid);
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
+
+    /* ── EVENTS ── */
+    .event-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border: 1px solid var(--rule);
+    }
+
+    .event-card {
+      padding: 28px 24px;
+      border-right: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+    .event-card:nth-child(4n) { border-right: none; }
+    .event-card:nth-last-child(-n+4) { border-bottom: none; }
+
+    .event-card h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+    .event-card p {
+      font-size: 13px;
+      color: var(--light);
+      line-height: 1.5;
+    }
+
+    /* ── GALLERY ── */
+    .gallery {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 280px 280px;
+      gap: 4px;
+    }
+
+    .gallery-item {
+      background: #ccc;
+      position: relative;
+      overflow: hidden;
+    }
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .gallery-item:first-child {
+      grid-row: 1 / 3;
+    }
+
+    /* ── CONTACT ── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .contact-details { display: flex; flex-direction: column; }
+    .contact-row {
+      display: flex;
+      gap: 20px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .contact-row:first-child { border-top: 1px solid var(--rule); }
+    .c-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--light);
+      min-width: 72px;
+      padding-top: 2px;
+    }
+    .c-val { font-size: 15px; color: var(--dark); }
+    .c-val a { color: var(--dark); text-decoration: none; }
+    .c-val a:hover { text-decoration: underline; }
+
+    /* Form */
+    .contact-form { display: flex; flex-direction: column; gap: 14px; }
+
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    .form-group label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--mid);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      color: var(--dark);
+      padding: 11px 14px;
+      font-family: var(--font);
+      font-size: 14px;
+      outline: none;
+      border-radius: 0;
+      -webkit-appearance: none;
+      transition: border-color 0.15s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: #999; }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+
+    .form-submit {
+      background: var(--dark);
+      color: var(--white);
+      border: none;
+      padding: 13px 28px;
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      align-self: flex-start;
+      transition: background 0.15s;
+    }
+    .form-submit:hover { background: #333; }
+    .form-submit:disabled { opacity: 0.5; cursor: default; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: var(--white);
+      padding: 48px 40px 28px;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 40px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      margin-bottom: 24px;
+    }
+
+    .footer-brand h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .footer-brand p {
+      font-size: 13px;
+      color: #aaa;
+      line-height: 1.6;
+    }
+
+    .footer-nav { display: flex; gap: 48px; flex-wrap: wrap; }
+    .footer-col h4 {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #888;
+      margin-bottom: 14px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col ul li a {
+      font-size: 14px;
+      color: #aaa;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .footer-col ul li a:hover { color: var(--white); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-bottom p { font-size: 13px; color: #666; }
+
+    .fb-link {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #aaa;
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.15s;
+    }
+    .fb-link:hover { color: var(--white); }
+    .fb-link svg { width: 15px; height: 15px; fill: currentColor; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-image { min-height: 280px; }
+      .hero-text { padding: 52px 20px 48px; }
+      .section { padding: 52px 20px; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .service-card:nth-child(3n) { border-right: 1px solid var(--rule); }
+      .service-card:nth-child(2n) { border-right: none; }
+      .split { grid-template-columns: 1fr; }
+      .split-image { min-height: 260px; }
+      .event-grid { grid-template-columns: repeat(2, 1fr); }
+      .event-card:nth-child(4n) { border-right: 1px solid var(--rule); }
+      .event-card:nth-child(2n) { border-right: none; }
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: 200px 200px 200px; }
+      .gallery-item:first-child { grid-row: auto; }
+      footer { padding: 40px 20px 24px; }
+      .footer-top { flex-direction: column; }
+      .mobile-menu { padding: 12px 20px 20px; }
+    }
+
+    @media (max-width: 560px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .service-card { border-right: none !important; }
+      .service-card:nth-last-child(-n+3) { border-bottom: 1px solid var(--rule); }
+      .service-card:last-child { border-bottom: none; }
+      .event-grid { grid-template-columns: 1fr; }
+      .event-card { border-right: none !important; }
+      .event-card:last-child { border-bottom: none; }
+      .form-row-2 { grid-template-columns: 1fr; }
+      .hero-buttons { flex-direction: column; }
+      .btn { width: 100%; text-align: center; }
+      .gallery { grid-template-columns: 1fr; grid-template-rows: auto; }
+      .gallery-item { height: 200px; }
+      .footer-nav { flex-direction: column; gap: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-badge">MH</div>
+      <span class="nav-logo-name">Mobilscene Helgeland</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#tjenester">Tjenester</a></li>
+      <li><a href="#om-oss">Om oss</a></li>
+      <li><a href="#kontakt" class="nav-cta">Kontakt</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Meny">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#tjenester" onclick="closeMenu()">Tjenester</a>
+    <a href="#om-oss" onclick="closeMenu()">Om oss</a>
+    <a href="#kontakt" onclick="closeMenu()">Kontakt</a>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-text">
+      <h1>Sceneløsning til ditt arrangement</h1>
+      <p>Mobilscene Helgeland leverer mobile sceneløsninger til konserter, festivaler og arrangementer langs hele Helgeland-kysten.</p>
+      <div class="hero-buttons">
+        <a href="#kontakt" class="btn btn-dark">Ta kontakt</a>
+        <a href="#tjenester" class="btn btn-border">Se tjenester</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="øversteHjørne" alt="Mobilscene Helgeland" />
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="section" id="tjenester">
+    <h2>Hva vi tilbyr</h2>
+    <p class="sub">Vi stiller opp med utstyr og hjelper deg fra rigging til nedriving — du kan fokusere på selve arrangementet.</p>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <h3>Sceneutleie</h3>
+        <p>Mobile scenekonstruksjoner som kan settes opp på de fleste lokasjoner, enten det er en grendehus-bakgård eller en åpen festivalplens.</p>
+      </div>
+      <div class="service-card">
+        <h3>Lydanlegg</h3>
+        <p>PA-anlegg og lydteknikk tilpasset arrangementets størrelse og lokasjon — innendørs som utendørs.</p>
+      </div>
+      <div class="service-card">
+        <h3>Lys</h3>
+        <p>Scenebelysning tilpasset arrangementet, enten det er et enkelt oppsett eller noe mer avansert.</p>
+      </div>
+      <div class="service-card">
+        <h3>Rigging og nedriving</h3>
+        <p>Vi monterer og demonterer alt utstyret. Du trenger ikke stille opp med mannskap — vi ordner det.</p>
+      </div>
+      <div class="service-card">
+        <h3>Transport</h3>
+        <p>Vi frakter utstyret til og fra lokasjonen din langs Helgeland-kysten.</p>
+      </div>
+      <div class="service-card">
+        <h3>Tekniker på stedet</h3>
+        <p>Vi er tilgjengelige under arrangementet og sørger for at alt fungerer som det skal.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT - split layout -->
+  <div class="split" id="om-oss">
+    <div class="split-image">
+      <img src="bilde1.jpg" alt="Om Mobilscene Helgeland" />
+    </div>
+    <div class="split-text gray">
+      <h2>Lokal aktør på Helgeland</h2>
+      <p>Mobilscene Helgeland holder til i Sandnessjøen og tilbyr sceneløsninger til arrangører langs hele Helgeland-kysten.</p>
+      <p>Vi er en lokal aktør som kjenner regionen og forholdene godt. Det betyr at vi kan stille opp på steder der det er vanskelig å få tak i leverandører utenfra, og at vi er fleksible på behov og størrelse.</p>
+      <p>Har du et arrangement på gang? Ta gjerne kontakt for en uforpliktende prat.</p>
+      <div style="margin-top:24px;">
+        <a href="#kontakt" class="btn btn-dark">Kontakt oss</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- BILDER -->
+  <div class="gallery">
+      <div class="gallery-item">
+        <img src="bilde2.jpg" alt="" />
+      </div>
+      <div class="gallery-item">
+        <img src="bilde3.jpg" alt="" />
+      </div>
+      <div class="gallery-item">
+        <img src="bilde4.jpg" alt="" />
+      </div>
+      <div class="gallery-item">
+        <img src="bilde5.jpg" alt="" />
+      </div>
+      <div class="gallery-item">
+        <img src="bilde6.jpg" alt="" />
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <section class="section section-gray" id="kontakt">
+    <h2>Ta kontakt</h2>
+    <p class="sub">Ring oss eller send en melding — vi svarer så fort vi kan.</p>
+
+    <div class="contact-grid">
+      <div class="contact-details">
+        <div class="contact-row">
+          <span class="c-label">Telefon</span>
+          <span class="c-val"><a href="tel:90102403">901 02 403</a></span>
+        </div>
+        <div class="contact-row">
+          <span class="c-label">E-post</span>
+          <span class="c-val"><a href="/cdn-cgi/l/email-protection#bed3d1dcd7d2cddddbd0db90d6dbd2d9dbd2dfd0dafed2d7c8db90d0d1"><span class="__cf_email__" data-cfemail="c9a4a6aba0a5baaaaca7ace7a1aca5aeaca5a8a7ad89a5a0bface7a7a6">[email&#160;protected]</span></a></span>
+        </div>
+        <div class="contact-row">
+          <span class="c-label">Sted</span>
+          <span class="c-val">Sandnessjøen, Helgeland</span>
+        </div>
+        <div class="contact-row">
+          <span class="c-label">Facebook</span>
+          <span class="c-val"><a href="https://www.facebook.com/profile.php?id=100057534200426" target="_blank" rel="noopener">Mobilscene Helgeland</a></span>
+        </div>
+      </div>
+
+      <div class="contact-form">
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="name">Navn</label>
+            <input type="text" id="name" placeholder="Ditt navn" />
+          </div>
+          <div class="form-group">
+            <label for="phone">Telefon</label>
+            <input type="tel" id="phone" placeholder="900 00 000" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">E-post</label>
+          <input type="email" id="email" placeholder="din@epost.no" />
+        </div>
+        <div class="form-group">
+          <label for="etype">Type arrangement</label>
+          <select id="etype">
+            <option value="" disabled selected>Velg type</option>
+            <option>Konsert</option>
+            <option>Festival</option>
+            <option>17. mai / kommunearrangement</option>
+            <option>Bedriftsarrangement</option>
+            <option>Idrettsarrangement</option>
+            <option>Annet</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="date">Dato (omtrentlig)</label>
+          <input type="date" id="date" />
+        </div>
+        <div class="form-group">
+          <label for="msg">Beskrivelse</label>
+          <textarea id="msg" placeholder="Fortell kort om arrangementet, sted, forventet antall folk osv."></textarea>
+        </div>
+        <button class="form-submit" id="submitBtn" onclick="sendForm()">Send forespørsel</button>
+        <p id="successMsg" style="display:none;font-size:14px;color:#555;margin-top:6px;">Takk! Vi tar kontakt så snart vi kan.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <h3>Mobilscene Helgeland</h3>
+        <p>Sandnessjøen · 901 02 403<br><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7d10121f14110e1e181318531518111a18111c13193d11140b18531312">[email&#160;protected]</a></p>
+      </div>
+      <div class="footer-nav">
+        <div class="footer-col">
+          <h4>Navigasjon</h4>
+          <ul>
+            <li><a href="#tjenester">Tjenester</a></li>
+            <li><a href="#om-oss">Om oss</a></li>
+            <li><a href="#kontakt">Kontakt</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Kontakt</h4>
+          <ul>
+            <li><a href="tel:90102403">901 02 403</a></li>
+            <li><a href="/cdn-cgi/l/email-protection#44292b262d283727212a216a2c2128232128252a2004282d32216a2a2b"><span class="__cf_email__" data-cfemail="ddb0b2bfb4b1aebeb8b3b8f3b5b8b1bab8b1bcb3b99db1b4abb8f3b3b2">[email&#160;protected]</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Mobilscene Helgeland</p>
+      <a href="https://www.facebook.com/profile.php?id=100057534200426" target="_blank" rel="noopener" class="fb-link">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Facebook
+      </a>
+    </div>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    function closeMenu() {
+      h
